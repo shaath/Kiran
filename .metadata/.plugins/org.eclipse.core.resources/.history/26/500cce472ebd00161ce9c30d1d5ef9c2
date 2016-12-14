@@ -1,0 +1,15 @@
+package com.PrimusBank.Tests;
+
+import java.io.FileInputStream;
+
+public class ApplycoloursEg {
+
+	public static void main(String[] args) 
+	{
+		String xlpath="F:\\Kiran\\PrimusBank\\src\\com\\PrimusBank\\TestData\\Test.xlsx";
+		FileInputStream fi=new FileInputStream("");
+		
+
+	}
+
+}

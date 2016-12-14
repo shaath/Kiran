@@ -1,0 +1,152 @@
+package com.PrimusBank.Utilities;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+
+public class GenericMaster
+{
+	public static FileInputStream fi;
+	public static XSSFWorkbook wb;
+	public static XSSFSheet ws;
+	public static XSSFRow r;
+	public static XSSFCell c;
+
+	public void ScreenShot(WebDriver driver,String pathname) throws IOException
+	{
+		File src=((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(src, new File(pathname));
+	}
+	
+	public void button_Click(WebDriver driver,String loc,String prName)
+	{
+		if (loc.equalsIgnoreCase("id"))
+		{
+			driver.findElement(By.id(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("className"))
+		{
+			driver.findElement(By.className(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("name"))
+		{
+			driver.findElement(By.name(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("tagName"))
+		{
+			driver.findElement(By.tagName(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("linkText"))
+		{
+			driver.findElement(By.linkText(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("partiallinktext")) 
+		{
+			
+			driver.findElement(By.partialLinkText(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("xpath"))
+		{
+			driver.findElement(By.xpath(prName)).click();
+		}
+		else if (loc.equalsIgnoreCase("cssselector"))
+		{
+			driver.findElement(By.cssSelector(prName)).click();
+		}
+		
+	}
+	
+	public void Text_Enter(WebDriver driver,String prName, String value)
+	{
+		driver.findElement(By.id(prName)).sendKeys(value);
+	}
+
+	public int row_Cnt(String xlPath,String shtName) throws IOException
+	{
+		fi=new FileInputStream(xlPath);
+		wb=new XSSFWorkbook(fi);
+		ws=wb.getSheet(shtName);
+		int rc=ws.getLastRowNum();
+		return rc;
+	}
+	
+	public String read_Excel(String xlPath,String shtName,int rNo,int cNo) throws IOException
+	{
+		fi=new FileInputStream(xlPath);
+		wb=new XSSFWorkbook(fi);
+		ws=wb.getSheet(shtName);
+		r=ws.getRow(rNo);
+		c=r.getCell(cNo);
+		String data=c.getStringCellValue();
+		return data;
+	}
+	
+	public void write_Excel(String xlpath, String shtName, int rNo,int cNo,String value,String xlout) throws IOException
+	{
+		
+		FileInputStream fi=new FileInputStream(xlpath);
+		XSSFWorkbook wb=new XSSFWorkbook(fi);
+		XSSFSheet ws=wb.getSheet(shtName);
+		XSSFRow r=ws.getRow(rNo);
+		XSSFCell c=r.createCell(cNo);
+		c.setCellValue(value);
+		
+		FileOutputStream fo=new FileOutputStream(xlout);
+		wb.write(fo);
+		fi.close();
+//		wb.close();
+	}
+	
+	public void write_Green_Excel(String xlpath, String shtName, int rNo,int cNo,String value,String xlout) throws IOException
+	{
+		
+		FileInputStream fi=new FileInputStream(xlpath);
+		XSSFWorkbook wb=new XSSFWorkbook(fi);
+		XSSFSheet ws=wb.getSheet(shtName);
+		XSSFRow r=ws.getRow(rNo);
+		XSSFCell c=r.createCell(cNo);
+		c.setCellValue(value);
+		CellStyle style=wb.createCellStyle();
+		style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		c.setCellStyle(style);
+		FileOutputStream fo=new FileOutputStream(xlout);
+		wb.write(fo);
+		fi.close();
+//		wb.close();
+	}
+	
+	public void write_RED_Excel(String xlpath, String shtName, int rNo,int cNo,String value,String xlout) throws IOException
+	{
+		
+		FileInputStream fi=new FileInputStream(xlpath);
+		XSSFWorkbook wb=new XSSFWorkbook(fi);
+		XSSFSheet ws=wb.getSheet(shtName);
+		XSSFRow r=ws.getRow(rNo);
+		XSSFCell c=r.createCell(cNo);
+		c.setCellValue(value);
+		CellStyle style=wb.createCellStyle();
+		style.setFillForegroundColor(IndexedColors.RED.getIndex());
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		c.setCellStyle(style);
+		FileOutputStream fo=new FileOutputStream(xlout);
+		wb.write(fo);
+		fi.close();
+//		wb.close();
+	}
+	
+}

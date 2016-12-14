@@ -1,0 +1,55 @@
+package com.PrimusBank.Tests;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.commons.exec.ExecuteException;
+
+import com.PrimusBank.Utilities.GenericMaster;
+
+public class xlops {
+
+	public static void main(String[] args) throws IOException
+	{
+		GenericMaster gm=new GenericMaster();
+		String xlpath="F:\\Kiran\\PrimusBank\\src\\com\\PrimusBank\\TestData\\BranchData.xlsx";
+		String xlout="F:\\Kiran\\PrimusBank\\src\\com\\PrimusBank\\Results\\BranchData.xlsx";
+//		File f=new File(xlout);
+		int rc=gm.row_Cnt(xlpath, "BrData");
+		System.out.println(rc);
+		
+		for (int i = 1; i <= rc; i++)
+		{
+			String br=gm.read_Excel( xlpath, "BrData", i, 0);
+			String add1=gm.read_Excel( xlpath, "BrData", i, 1);
+			String zip=gm.read_Excel( xlpath, "BrData", i, 2);
+			String cntry=gm.read_Excel( xlpath, "BrData", i, 3);
+			String state=gm.read_Excel( xlpath, "BrData", i, 4);
+			String city=gm.read_Excel( xlpath, "BrData", i, 5);
+			
+			System.out.println(br+"---"+add1+"---"+zip+"---"+cntry+"---"+state+"---"+city);
+			try 
+			{
+				if (!gm.read_Excel( xlpath, "BrData", i-1, 6).equals(null))
+				{
+					
+					xlpath=xlout;
+				}
+				
+			} 
+			catch(Exception e)
+			{
+				
+			}
+			
+			gm.write_Excel(xlpath, "BrData", i, 6, "Pass",xlout);
+		}
+		
+
+		
+	}
+
+}
